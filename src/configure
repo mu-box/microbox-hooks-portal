@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+# load hookit/setup to bootstrap hookit
+require 'hookit/setup'
+
+execute 'list all the files!' do
+  command 'ls -lah /'
+  stream true
+  on_data { |data| print data }
+end
