@@ -14,7 +14,7 @@ run_hook() {
 
   docker exec \
     $container \
-    hookit $hook "$payload"
+    /opt/nanobox/hooks/$hook "$payload"
 }
 
 start_container() {
@@ -29,7 +29,7 @@ start_container() {
     --net=nanobox \
     --ip=$ip \
     --volume=${hookit_dir}/:/opt/nanobox/hooks \
-    nanobox/portal:$VERSION
+    nanobox/portal
 }
 
 stop_container() {

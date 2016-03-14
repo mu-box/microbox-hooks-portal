@@ -1,0 +1,8 @@
+{
+  "config": {
+    "token": "123"
+  },
+  "logvac_host":"127.0.0.1",
+  "platform":"production",
+  "uid":"lb.portal"
+}
