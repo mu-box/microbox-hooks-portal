@@ -21,7 +21,7 @@
 
 @test "Start" {
   # Run hook
-  run run_hook "test-single" "start" "$(payload start)"
+  run run_hook "test-single" "start" "{}"
   [ "$status" -eq 0 ]
 
   # Verify portal running
@@ -33,9 +33,20 @@
   [ "$status" -eq 0 ]
 }
 
+@test "Verify Service" {
+  # Add a service
+  run docker exec test-single bash -c "portal -t 123 add-service -O '127.0.0.3' -R 1234 -T 'tcp' -s 'rr' -e 0 -n ''"
+  [ "$status" -eq 0 ]
+
+  # Verify service isn't empty
+  run docker exec test-single bash -c "portal -t 123 show-services"
+  [ "$status" -eq 0 ]
+  [ ! "$output" = "[]" ]
+}
+
 @test "Stop" {
   # Run hook
-  run run_hook "test-single" "stop" "$(payload stop)"
+  run run_hook "test-single" "stop" "{}"
   [ "$status" -eq 0 ]
 
   # Wait until services shut down

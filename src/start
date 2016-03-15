@@ -52,27 +52,3 @@ end
 service 'portal' do
   action :enable
 end
-
-# # Configure sshd
-# directory '/etc/service/ssh' do
-#   recursive true
-# end
-#
-# directory '/etc/service/ssh/log' do
-#   recursive true
-# end
-#
-# hook_file '/etc/service/ssh/log/run' do
-#   source 'runit/ssh-log'
-#   mode 0755
-# end
-#
-# hook_file '/etc/service/ssh/run' do
-#   source 'runit/ssh'
-#   mode 0755
-# end
-#
-# ensure_socket 'ssh' do
-#   port '(22)'
-#   action :listening
-# end
