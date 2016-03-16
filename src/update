@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# First, let's make sure portal is up-to-date
+# extract installed version
+portal_installed=$(cat /var/nanobox/portal.md5)
+# download the latest checksum
+curl \
+  -f \
+  -k \
+  -o /var/nanobox/portal.md5 \
+  https://s3.amazonaws.com/tools.nanopack.io/portal/linux/amd64/portal.md5
+# compare latest with installed
+portal_latest=$(cat /var/nanobox/portal.md5)
+if [ ! "$portal_installed" = "$portal_latest" ]; then
+  echo "Portal is out of date, updating to latest"
+  # stop the running Nanoagent
+  sv portal stop
+  # download the latest version
+  curl \
+    -f \
+    -k \
+    -o /usr/local/bin/portal \
+    https://s3.amazonaws.com/tools.nanopack.io/portal/linux/amd64/portal
+  # update permissions
+  chmod 755 /usr/local/bin/portal
+  # start the new version
+  sv portal start
+else
+  echo "Portal is up to date."
+fi
+
+# Now let's see if our hooks are up-to-date
+# extract installed version
+hooks_installed=$(cat /var/nanobox/hooks.md5)
+# download the latest checksum
+curl \
+  -f \
+  -k \
+  -o /var/nanobox/hooks.md5 \
+  https://s3.amazonaws.com/tools.nanobox.io/hooks/portal-stable.md5
+# compare latest with installed
+hooks_latest=$(cat /var/nanobox/hooks.md5)
+if [ ! "$hooks_installed" = "$hooks_latest" ]; then
+  echo "Hooks are out of date, updating to latest"
+  # download the latest version
+  curl \
+    -f \
+    -k \
+    https://s3.amazonaws.com/tools.nanobox.io/hooks/portal-stable.tgz \
+      | tar -xz -C /opt/nanobox/hooks
+else
+  echo "Hooks are up to date."
+fi
