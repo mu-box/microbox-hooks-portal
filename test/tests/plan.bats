@@ -8,7 +8,17 @@
 @test "Verify Plan" {
   run run_hook "test-plan" "plan" "$(payload plan)"
 
-  expected='{"vips":["default"],"port":8443,"behaviors":["backupable","migratable"],"horizontal":true}'
+  expected=$(cat <<-END
+{
+	"vips": ["default"],
+	"port": 8443,
+	"behaviors": [
+		"backupable",
+		"migratable"
+	],
+	"horizontal": true
+}
+END)
 
   [ "$output" = "$expected" ]
 }

@@ -1,15 +1,13 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-require 'json'
-
-plan = {
-  vips: [:default],
-  port: 8443,
-  behaviors: [
-    :backupable,
-    :migratable
-  ],
-  horizontal: true
+cat <<-END
+{
+	"vips": ["default"],
+	"port": 8443,
+	"behaviors": [
+		"backupable",
+		"migratable"
+	],
+	"horizontal": true
 }
-
-puts plan.to_json
+END
