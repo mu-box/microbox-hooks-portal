@@ -10,13 +10,10 @@
 
   expected=$(cat <<-END
 {
-	"vips": ["default"],
-	"port": 8443,
 	"behaviors": [
 		"backupable",
 		"migratable"
-	],
-	"horizontal": true
+	]
 }
 END)
 
