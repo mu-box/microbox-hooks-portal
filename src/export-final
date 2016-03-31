@@ -7,15 +7,13 @@ require 'bundler/setup'
 # load hookit/setup to bootstrap hookit and import the dsl
 require 'hookit/setup'
 
-# This hook will export the data to the new members while the service is offline
-payload[:members].each do |member|
-  execute "send diff data to new member" do
-    command <<-EOF
-      rsync \
-        --delete \
-        -a \
-        /var/db/portal/. \
-        #{member[:local_ip]}:/var/db/portal/
-    EOF
-  end
+# This hook will export the data to the new member while the service is offline
+execute "send diff data to new member" do
+  command <<-EOF
+    rsync \
+      --delete \
+      -a \
+      /var/db/portal/. \
+      #{payload[:member][:local_ip]}:/var/db/portal/
+  EOF
 end
