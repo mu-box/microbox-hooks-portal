@@ -35,11 +35,11 @@
 
 @test "Verify Service" {
   # Add a service
-  run docker exec test-single bash -c "portal -t 123 add-service -O '127.0.0.3' -R 1234 -T 'tcp' -s 'rr' -e 0 -n ''"
+  run docker exec test-single bash -c "portal -t 123 -P 8444 add-service -O '127.0.0.3' -R 1234 -T 'tcp' -s 'rr' -e 0 -n ''"
   [ "$status" -eq 0 ]
 
   # Verify service isn't empty
-  run docker exec test-single bash -c "portal -t 123 show-services"
+  run docker exec test-single bash -c "portal -t 123 -P 8444 show-services"
   [ "$status" -eq 0 ]
   [ ! "$output" = "[]" ]
 }

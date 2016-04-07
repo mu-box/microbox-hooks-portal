@@ -33,6 +33,41 @@ template '/opt/gonano/etc/narc.conf' do
   })
 end
 
+if payload[:platform] == 'production'
+
+  # start portal to register itself as an external service
+  execute '/opt/nanobox/hooks/start'
+
+  execute 'register api service' do
+    command <<-END
+      portal -i -t #{payload[:config][:token]} -P 8444 add-service \
+        -j '{
+              "interface": "eth0",
+              "port": 8443,
+              "type": "tcp",
+              "scheduler": "rr",
+              "persistence": 0,
+              "netmask": "",
+              "servers": [
+                {
+                  "host": "127.0.0.1",
+                  "port": 8444,
+                  "forwarder": "m",
+                  "weight": 5,
+                  "upper_threshold": 0,
+                  "lower_threshold": 0
+                }
+              ]
+            }'
+    END
+    only_if { `portal -i -t #{payload[:config][:token]} -P 8444 show-services | grep eth0`.empty? }
+  end
+
+  # stop portal
+  execute '/opt/nanobox/hooks/stop'
+
+end
+
 # Setup root keys for data migrations
 directory '/root/.ssh' do
   recursive true
