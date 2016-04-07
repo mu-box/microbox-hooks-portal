@@ -66,10 +66,6 @@ if payload[:platform] == 'production'
   # stop portal
   execute '/opt/nanobox/hooks/stop'
 
-end
-
-if payload[:platform] != 'local'
-
   # Setup root keys for data migrations
   directory '/root/.ssh' do
     recursive true
