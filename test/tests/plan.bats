@@ -16,7 +16,10 @@
 	],
   "ips": ["default"]
 }
-END)
+END
+)
+
+  echo $output
 
   [ "$output" = "$expected" ]
 }
