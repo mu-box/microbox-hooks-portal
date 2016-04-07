@@ -5,6 +5,7 @@ cat <<-END
 	"behaviors": [
 		"backupable",
 		"migratable"
-	]
+	],
+	"ips": ["default"]
 }
 END

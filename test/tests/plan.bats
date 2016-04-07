@@ -13,7 +13,8 @@
 	"behaviors": [
 		"backupable",
 		"migratable"
-	]
+	],
+  "ips": ["default"]
 }
 END)
 
