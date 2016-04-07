@@ -14,7 +14,7 @@
 		"backupable",
 		"migratable"
 	],
-  "ips": ["default"]
+	"ips": ["default"]
 }
 END
 )
