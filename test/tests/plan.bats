@@ -19,7 +19,8 @@
 END
 )
 
-  echo $output
+  echo "$output"
+  echo "$expected"
 
   [ "$output" = "$expected" ]
 }
