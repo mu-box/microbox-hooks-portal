@@ -8,9 +8,9 @@ require 'bundler/setup'
 require 'hookit/setup'
 
 # set up persistance
-file "/etc/nanoinit.d/eth00" do
+file "/etc/nanoinit.d/redd00" do
   content <<-EOF
-    ifconfig eth0:0 #{payload[:ips][:default]}
+    ifconfig redd0:0 #{payload[:ips][:default]}
   EOF
   mode 0755
 end
@@ -18,6 +18,6 @@ end
 # bring up interface
 execute "bring up vip" do
   command <<-EOF
-    ifconfig eth0:0 #{payload[:ips][:default]}
+    ifconfig redd0:0 #{payload[:ips][:default]}
   EOF
 end
