@@ -17,7 +17,7 @@
 }
 
 @test "Insert Service Data" {
-  run docker exec "test-migrate-old" bash -c "portal -t 123 add-service -O '127.0.0.3' -R 1234 -T 'tcp' -s 'rr' -e 0 -n ''"
+  run docker exec "test-migrate-old" bash -c "portal -i -t 123 add-service -O '127.0.0.3' -R 1234 -T 'tcp' -s 'rr' -e 0 -n ''"
   echo "$output"
   [ "$status" -eq 0 ]
 }
@@ -64,7 +64,7 @@
 }
 
 @test "Verify Data Transfered" {
-  run docker exec "test-migrate-new" bash -c "portal -t 123 show-services"
+  run docker exec "test-migrate-new" bash -c "portal -i -t 123 show-services"
   [ "$status" -eq 0 ]
   echo "$output"
   [ "$output" = "[{\"id\":\"tcp-127_0_0_3-1234\",\"host\":\"127.0.0.3\",\"port\":1234,\"type\":\"tcp\",\"scheduler\":\"rr\",\"persistence\":0,\"netmask\":\"\"}]" ]
