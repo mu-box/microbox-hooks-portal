@@ -53,8 +53,29 @@ service 'portal' do
   action :enable
 end
 
-# Attach the IP if provided
+# punch a hole in the firewall if we're in production
+if payload[:platform] == 'production'
+  # ensure the rule persists reboots
+  file "/etc/nanoinit.d/portal-iptables" do
+    content <<-EOF
+      # punch a hole in the firewall for portal
+      iptables -L | grep 8443 || \
+        iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+    EOF
+    mode 0755
+  end
 
+  # punch a hole now
+  execute "punch open the firewall" do
+    command <<-EOF
+      iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+    EOF
+    only_if { `iptables -L | grep 8443`.empty? }
+  end
+
+end
+
+# Attach the IP if provided
 if payload[:ips]
   # set up persistance
   file "/etc/nanoinit.d/redd00" do

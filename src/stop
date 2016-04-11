@@ -7,9 +7,23 @@ require 'bundler/setup'
 # load hookit/setup to bootstrap hookit and import the dsl
 require 'hookit/setup'
 
+# Close the firewall
+if payload[:platform] == 'production'
+
+  execute "close up the firewall" do
+    command "iptables -D INPUT -p tcp -m tcp --dport 8443 -j ACCEPT"
+    not_if { `iptables -L | grep 8443`.empty? }
+  end
+
+  execute "remove persistence" do
+    command "rm -f /etc/nanoinit.d/portal-iptables"
+  end
+
+end
+
 # Remove the IP if provided
 if payload[:ips]
-  
+
   execute "bring down vip" do
     command "ifconfig redd0:0 down"
   end
