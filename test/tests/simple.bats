@@ -51,6 +51,10 @@
   run run_hook "test-single" "stop" "{}"
   [ "$status" -eq 0 ]
 
+  # Test the double stop
+  run run_hook "test-single" "stop" "{}"
+  [ "$status" -eq 0 ]
+
   # Wait until services shut down
   while docker exec "test-single" bash -c "ps aux | grep [p]ortal"
   do

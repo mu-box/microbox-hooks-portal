@@ -17,6 +17,7 @@ if payload[:platform] == 'production'
 
   execute "remove persistence" do
     command "rm -f /etc/nanoinit.d/portal-iptables"
+    not_if { !File.exist?('/etc/nanoinit.d/portal-iptables') }
   end
 
 end
@@ -30,25 +31,30 @@ if payload[:ips]
 
   execute "remove persistance" do
     command "rm -f /etc/nanoinit.d/redd00"
+    not_if { !File.exist?('/etc/nanoinit.d/redd00') }
   end
 end
 
 # Stop portal
 service 'portal' do
   action :disable
+  not_if { !Dir.exist?('/etc/service/portal') }
 end
 
 # Remove portal runit definition
 directory '/etc/service/portal' do
   action :delete
+  not_if { !Dir.exist?('/etc/service/portal') }
 end
 
 # Stop narc
 service 'narc' do
   action :disable
+  not_if { !Dir.exist?('/etc/service/narc') }
 end
 
 # Remove narc runit definition
 directory '/etc/service/narc' do
   action :delete
+  not_if { !Dir.exist?('/etc/service/narc') }
 end
