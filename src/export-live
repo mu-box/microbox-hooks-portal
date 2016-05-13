@@ -16,6 +16,7 @@ execute "send bulk data to new member" do
       - \
       /var/db/portal \
         | ssh \
+          -p 2022 \
           -o StrictHostKeyChecking=no \
           #{payload[:member][:local_ip]} \
           tar -xpf -

@@ -35,6 +35,11 @@ end
 
 if payload[:platform] == 'production'
 
+  # provide a custom ssh configuration
+  hook_file '/opt/gonano/etc/ssh/sshd_config' do
+    mode 0644
+  end
+
   # Setup root keys for data migrations
   directory '/root/.ssh' do
     recursive true
