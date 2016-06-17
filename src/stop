@@ -47,6 +47,18 @@ directory '/etc/service/portal' do
   not_if { !Dir.exist?('/etc/service/portal') }
 end
 
+# Stop nginx
+service 'nginx' do
+  action :disable
+  not_if { !Dir.exist?('/etc/service/nginx') }
+end
+
+# Remove nginx runit definition
+directory '/etc/service/nginx' do
+  action :delete
+  not_if { !Dir.exist?('/etc/service/nginx') }
+end
+
 # Stop narc
 service 'narc' do
   action :disable

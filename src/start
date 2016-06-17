@@ -30,6 +30,29 @@ service 'narc' do
   action :enable
 end
 
+# create the runit definitions for nginx
+directory '/etc/service/nginx' do
+  recursive true
+end
+
+directory '/etc/service/nginx/log' do
+  recursive true
+end
+
+hook_file '/etc/service/nginx/log/run' do
+  source 'runit/nginx-log'
+  mode 0755
+end
+
+hook_file '/etc/service/nginx/run' do
+  source 'runit/nginx'
+  mode 0755
+end
+
+service 'nginx' do
+  action :enable
+end
+
 # create the runit definitions for portal
 directory '/etc/service/portal' do
   recursive true
