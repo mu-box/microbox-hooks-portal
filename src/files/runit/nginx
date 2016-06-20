@@ -4,4 +4,4 @@
 export PATH="/opt/local/sbin:/opt/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/gonano/sbin:/opt/gonano/bin"
 
 # command to run nginx
-exec nginx -c /opt/gonano/etc/narc.conf
+exec nginx -c /var/db/portal/portal-nginx.conf
