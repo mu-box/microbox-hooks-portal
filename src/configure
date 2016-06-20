@@ -33,6 +33,11 @@ template '/opt/gonano/etc/narc.conf' do
   })
 end
 
+# configure nginx
+hook_file '/var/db/portal/portal-nginx.conf' do
+  mode 0644
+end
+
 if payload[:platform] == 'production'
 
   # provide a custom ssh configuration
