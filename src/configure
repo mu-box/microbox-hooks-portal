@@ -38,6 +38,11 @@ hook_file '/var/db/portal/portal-nginx.conf' do
   mode 0644
 end
 
+hook_file '/var/db/portal/portal-nginx-primer.conf' do
+  source 'portal-nginx.conf'
+  mode 0644
+end
+
 if payload[:platform] == 'production'
 
   # provide a custom ssh configuration
