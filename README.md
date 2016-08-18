@@ -1,4 +1,4 @@
-# nanobox-hooks-portal ![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-hooks-portal.svg)
+# nanobox-hooks-portal [![Build Status Image](https://travis-ci.org/nanobox-io/nanobox-hooks-portal.svg)](https://travis-ci.org/nanobox-io/nanobox-hooks-portal)
 Nanobox hooks for the Portal service
 
 ## Publishing
