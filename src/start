@@ -81,10 +81,11 @@ if payload[:platform] == 'production'
   # ensure the rule persists reboots
   file "/etc/nanoinit.d/portal-iptables" do
     content <<-EOF
-      # punch a hole in the firewall for portal
-      iptables -L | grep 8443 || \
-        iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
-    EOF
+#!/bin/bash
+# punch a hole in the firewall for portal
+iptables -L | grep 8443 || \
+  iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+EOF
     mode 0755
   end
 
@@ -103,8 +104,9 @@ if payload[:ips]
   # set up persistance
   file "/etc/nanoinit.d/redd00" do
     content <<-EOF
-      ifconfig redd0:0 #{payload[:ips][:default]}
-    EOF
+#!/bin/bash
+ifconfig redd0:0 #{payload[:ips][:default]}
+EOF
     mode 0755
   end
 
