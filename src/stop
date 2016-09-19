@@ -11,8 +11,8 @@ require 'hookit/setup'
 if payload[:platform] == 'production'
 
   execute "close up the firewall" do
-    command "iptables -D INPUT -p tcp -m tcp --dport 8443 -j ACCEPT"
-    not_if { `iptables -L | grep 8443`.empty? }
+    command "/etc/nanoinit.d/portal-iptables stop"
+    not_if { !File.exist?('/etc/nanoinit.d/portal-iptables') }
   end
 
   execute "remove persistence" do
@@ -26,7 +26,8 @@ end
 if payload[:ips]
 
   execute "bring down vip" do
-    command "ifconfig redd0:0 down"
+    command "/etc/nanoinit.d/redd00 stop"
+    not_if { !File.exist?('/etc/nanoinit.d/redd00') }
   end
 
   execute "remove persistance" do

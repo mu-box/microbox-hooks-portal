@@ -82,9 +82,22 @@ if payload[:platform] == 'production'
   file "/etc/nanoinit.d/portal-iptables" do
     content <<-EOF
 #!/bin/bash
-# punch a hole in the firewall for portal
-iptables -L | grep 8443 || \
-  iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+case $1 in
+  start)
+    if [[ ! $(iptables -L INPUT) =~ 8443 ]]; then
+      iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+    fi
+    ;;
+  stop)
+    if [[ $(iptables -L INPUT) =~ 8443 ]]; then
+      iptables -D INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+    fi
+    ;;
+  *)
+    echo "$0 start|stop"
+    exit 1
+    ;;
+esac
 EOF
     mode 0755
   end
@@ -92,9 +105,8 @@ EOF
   # punch a hole now
   execute "punch open the firewall" do
     command <<-EOF
-      iptables -A INPUT -p tcp -m tcp --dport 8443 -j ACCEPT
+      /etc/nanoinit.d/portal-iptables start
     EOF
-    only_if { `iptables -L | grep 8443`.empty? }
   end
 
 end
@@ -105,7 +117,24 @@ if payload[:ips]
   file "/etc/nanoinit.d/redd00" do
     content <<-EOF
 #!/bin/bash
-ifconfig redd0:0 #{payload[:ips][:default]}
+case $1 in
+  start)
+    if [[ ! $(ifconfig) =~ redd0:0 ]]; then
+      ifconfig redd0:0 #{payload[:ips][:default]}
+      arping -A -c 10 -I redd0 #{payload[:ips][:default]}
+    fi
+    ;;
+  stop)
+    if [[ $(ifconfig) =~ redd0:0 ]]; then
+      ifconfig redd0:0 down
+    fi
+    ;;
+  *)
+    echo "$0 start|stop"
+    exit 1
+    ;;
+esac
+
 EOF
     mode 0755
   end
@@ -113,7 +142,7 @@ EOF
   # bring up interface
   execute "bring up vip" do
     command <<-EOF
-      ifconfig redd0:0 #{payload[:ips][:default]}
+      /etc/nanoinit.d/redd00 start
     EOF
   end
 end

@@ -14,6 +14,12 @@
 @test "Start Portal On Old" {
   run run_hook "test-migrate-old" "start" "$(payload start)"
   [ "$status" -eq 0 ]
+
+  # Verify portal listening
+  until run docker exec "test-migrate-old" bash -c "nc -q 1 127.0.0.1 8444 < /dev/null"
+  do
+    sleep 1
+  done
 }
 
 @test "Insert Service Data" {
@@ -61,6 +67,12 @@
 @test "Start New Portal Service" {
   run run_hook "test-migrate-new" "start" "$(payload start)"
   [ "$status" -eq 0 ]
+
+  # Verify portal listening
+  until run docker exec "test-migrate-new" bash -c "nc -q 1 127.0.0.1 8444 < /dev/null"
+  do
+    sleep 1
+  done
 }
 
 @test "Verify Data Transfered" {

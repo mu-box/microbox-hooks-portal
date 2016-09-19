@@ -31,6 +31,12 @@
   # Verify narc running
   run docker exec test-single bash -c "ps aux | grep [n]arc"
   [ "$status" -eq 0 ]
+
+  # Verify portal listening
+  until run docker exec test-single bash -c "nc -q 1 127.0.0.1 8444 < /dev/null"
+  do
+    sleep 1
+  done
 }
 
 @test "Verify Service" {
