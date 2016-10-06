@@ -14,7 +14,7 @@ execute "send diff data to new member" do
       --delete \
       -a \
       /var/db/portal/. \
-      -e "ssh -p 2022" \
+      -e 'ssh -p 2022' \
       #{payload[:member][:local_ip]}:/var/db/portal/
   "
 end
