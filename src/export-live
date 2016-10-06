@@ -10,7 +10,7 @@ require 'hookit/setup'
 # This hook will export the data to the new member while the service is
 # still online.
 execute "send bulk data to new member" do
-  command <<-EOF
+  command "
     tar \
       -cf \
       - \
@@ -19,6 +19,6 @@ execute "send bulk data to new member" do
           -p 2022 \
           -o StrictHostKeyChecking=no \
           #{payload[:member][:local_ip]} \
-          tar -xpf -
-  EOF
+          tar -xpf - -C /
+  "
 end

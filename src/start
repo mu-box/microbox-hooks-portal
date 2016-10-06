@@ -98,15 +98,14 @@ case $1 in
     exit 1
     ;;
 esac
+
 EOF
     mode 0755
   end
 
   # punch a hole now
   execute "punch open the firewall" do
-    command <<-EOF
-      /etc/nanoinit.d/portal-iptables start
-    EOF
+    command "/etc/nanoinit.d/portal-iptables start"
   end
 
 end
@@ -141,8 +140,6 @@ EOF
 
   # bring up interface
   execute "bring up vip" do
-    command <<-EOF
-      /etc/nanoinit.d/redd00 start
-    EOF
+    command "/etc/nanoinit.d/redd00 start"
   end
 end
