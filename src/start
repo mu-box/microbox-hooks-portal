@@ -109,37 +109,3 @@ EOF
   end
 
 end
-
-# Attach the IP if provided
-if payload[:ips]
-  # set up persistance
-  file "/etc/nanoinit.d/redd00" do
-    content <<-EOF
-#!/bin/bash
-case $1 in
-  start)
-    if [[ ! $(ifconfig) =~ redd0:0 ]]; then
-      ifconfig redd0:0 #{payload[:ips][:default]}
-      arping -A -c 10 -I redd0 #{payload[:ips][:default]}
-    fi
-    ;;
-  stop)
-    if [[ $(ifconfig) =~ redd0:0 ]]; then
-      ifconfig redd0:0 down
-    fi
-    ;;
-  *)
-    echo "$0 start|stop"
-    exit 1
-    ;;
-esac
-
-EOF
-    mode 0755
-  end
-
-  # bring up interface
-  execute "bring up vip" do
-    command "/etc/nanoinit.d/redd00 start"
-  end
-end

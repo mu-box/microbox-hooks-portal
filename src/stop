@@ -22,20 +22,6 @@ if payload[:platform] == 'production'
 
 end
 
-# Remove the IP if provided
-if payload[:ips]
-
-  execute "bring down vip" do
-    command "/etc/nanoinit.d/redd00 stop"
-    not_if { !File.exist?('/etc/nanoinit.d/redd00') }
-  end
-
-  execute "remove persistance" do
-    command "rm -f /etc/nanoinit.d/redd00"
-    not_if { !File.exist?('/etc/nanoinit.d/redd00') }
-  end
-end
-
 # Stop portal
 service 'portal' do
   action :disable
