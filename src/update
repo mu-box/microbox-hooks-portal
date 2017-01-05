@@ -34,7 +34,7 @@ if local_portal_md5 != aws_portal_md5
       curl \
         -f \
         -k \
-        -o /usr/local/bin/portal
+        -o /usr/local/bin/portal \
         https://d3ep67zochz54j.cloudfront.net/portal/linux/amd64/portal
     END
   end
