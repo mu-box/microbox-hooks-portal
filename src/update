@@ -13,13 +13,13 @@ local_portal_md5 = execute "local portal md5" do
 end
 
 aws_portal_md5 = execute "aws portal md5" do
-  command " 
-    bash -c 'curl \
+  command <<-END
+    curl \
       -f \
       -k \
       https://d3ep67zochz54j.cloudfront.net/portal/linux/amd64/portal.md5 \
-        | tee /var/nanobox/portal.md5'
-  "
+        | tee /tmp/portal.md5
+  END
 end
 
 if local_portal_md5 != aws_portal_md5
@@ -30,24 +30,26 @@ if local_portal_md5 != aws_portal_md5
   end
 
   execute "Download portal" do
-    command " 
-      bash -c 'curl \
+    command <<-END
+      curl \
         -f \
         -k \
         -o /usr/local/bin/portal
-        https://d3ep67zochz54j.cloudfront.net/portal/linux/amd64/portal'
-    "
+        https://d3ep67zochz54j.cloudfront.net/portal/linux/amd64/portal
+    END
   end
 
   execute "Chmod portal" do
-    command " 
-      bash -c 'chmod 755 /usr/local/bin/portal'
-    "
+    command "chmod 755 /usr/local/bin/portal"
   end
 
   service 'portal' do
     action :enable
     not_if { !Dir.exist?('/etc/service/portal') }
+  end
+
+  execute "Finalize update" do
+    command "mv /tmp/portal.md5 /var/nanobox/portal.md5"
   end
 end
 
@@ -57,23 +59,27 @@ local_hooks_md5 = execute "local hooks md5" do
 end
 
 aws_hooks_md5 = execute "aws hooks md5" do
-  command "
-    bash -c 'curl \
+  command <<-END
+    curl \
       -f \
       -k \
       https://d1ormdui8qdvue.cloudfront.net/hooks/portal-stable.md5 \
-        | tee /var/nanobox/hooks.md5'
-  "
+        | tee /tmp/hooks.md5
+  END
 end
 
 if local_hooks_md5 != aws_hooks_md5
   execute "update hooks" do
-    command "
-      bash -c 'curl \
-          -f \
-          -k \
-          https://d1ormdui8qdvue.cloudfront.net/hooks/portal-stable.tgz \
-            | tar -xz -C /opt/nanobox/hooks'
-    "
+    command <<-END
+      curl \
+        -f \
+        -k \
+        https://d1ormdui8qdvue.cloudfront.net/hooks/portal-stable.tgz \
+          | tar -xz -C /opt/nanobox/hooks
+    END
+  end
+
+  execute "Finalize update" do
+    command "mv /tmp/hooks.md5 /var/nanobox/hooks.md5"
   end
 end
