@@ -9,12 +9,10 @@ require 'hookit/setup'
 
 # This hook will export the data to the new member while the service is offline
 execute "send diff data to new member" do
-  command "
-    rsync \
-      --delete \
-      -a \
-      /var/db/portal/. \
-      -e 'ssh -p 2022' \
-      #{payload[:member][:local_ip]}:/var/db/portal/
-  "
+  command "rsync \
+    --delete \
+    -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+    -a /var/db/portal/. \
+    -e 'ssh -p 2022' \
+    #{payload[:member][:local_ip]}:/var/db/portal/"
 end
