@@ -11,8 +11,7 @@ require 'hookit/setup'
 execute "send diff data to new member" do
   command "rsync \
     --delete \
-    -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' \
+    -e 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 2022' \
     -a /var/db/portal/. \
-    -e 'ssh -p 2022' \
     #{payload[:member][:local_ip]}:/var/db/portal/"
 end
