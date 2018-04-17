@@ -56,13 +56,18 @@ if payload[:logvac_host]
 end
 
 # configure nginx
-hook_file '/var/db/portal/portal-nginx.conf' do
+template '/var/db/portal/portal-nginx.conf' do
+  source 'portal/portal-nginx.conf.erb'
   mode 0644
+  owner 'gonano'
+  group 'gonano'
 end
 
-hook_file '/var/db/portal/portal-nginx-primer.conf' do
-  source 'portal-nginx.conf'
+template '/var/db/portal/portal-nginx-primer.conf' do
+  source 'portal/portal-nginx.conf.erb'
   mode 0644
+  owner 'gonano'
+  group 'gonano'
 end
 
 if payload[:platform] == 'production'
