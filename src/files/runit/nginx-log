@@ -1,8 +1,8 @@
 #!/bin/sh -e
 
 # create the log directory if it doesn't exist
-[ -d /var/log/gonano/nginx ] || mkdir -p /var/log/gonano/nginx
+[ -d /var/log/gomicro/nginx ] || mkdir -p /var/log/gomicro/nginx
 
 # tell svlogd to drop the stdout into our custom location
-cd /var/log/gonano/nginx
-exec svlogd -v -ttt /var/log/gonano/nginx
+cd /var/log/gomicro/nginx
+exec svlogd -v -ttt /var/log/gomicro/nginx
